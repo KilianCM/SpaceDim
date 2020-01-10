@@ -1,6 +1,7 @@
 package com.lpdim.spacedim.game
 
 import android.util.Log
+import com.lpdim.spacedim.game.model.Event
 import okhttp3.*
 import okio.ByteString
 import timber.log.Timber
@@ -14,7 +15,6 @@ class WebSocketManager : WebSocketListener() {
         //webSocket.send("{\"type\" :\"READY\", \"value\":true}")
         //webSocket.close(NORMAL_CLOSURE_STATUS, "Goodbye !")
         Timber.d("Connection OK")
-
 
     }
 
@@ -37,6 +37,8 @@ class WebSocketManager : WebSocketListener() {
 
     companion object {
 
+        var webSocket: WebSocket? = null
+
         fun joinRoom(roomName: String, id: Int) {
             val url = "ws://vps769278.ovh.net:8081/ws/join/$roomName/$id"
 
@@ -45,8 +47,12 @@ class WebSocketManager : WebSocketListener() {
             val listener = WebSocketManager()
             val client = OkHttpClient()
 
-            client.newWebSocket(request, listener)
+            webSocket = client.newWebSocket(request, listener)
             client.dispatcher.executorService.shutdown()
+        }
+
+        fun sendToServer(playerAction: Event.PlayerAction) {
+            webSocket?.send(" ") //TODO Use a content negociator to serialize obj to json
         }
     }
 
