@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation" app:startDestination="@id/waitingRoomFragment">
+
+    <fragment android:id="@+id/waitingRoomFragment"
+              android:name="com.lpdim.spacedim.game.WaitingRoomFragment"
+              android:label="WaitingRoomFragment"
+              tools:layout="@layout/fragment_waiting_room"  >
+        <action android:id="@+id/action_waitingRoomFragment_to_gameFragment" app:destination="@id/gameFragment"/>
+    </fragment>
+    <fragment android:id="@+id/gameFragment"
+              android:name="com.lpdim.spacedim.game.GameFragment"
+              tools:layout="@layout/fragment_game"
+              android:label="GameFragment"/>
+</navigation>
