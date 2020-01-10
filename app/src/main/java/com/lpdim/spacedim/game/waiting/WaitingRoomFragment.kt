@@ -1,4 +1,4 @@
-package com.lpdim.spacedim.game
+package com.lpdim.spacedim.game.waiting
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,6 @@ class WaitingRoomFragment : Fragment() {
         val binding: FragmentWaitingRoomBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_waiting_room, container, false)
 
-        //The complete onClickListener with Navigation
         binding.button.setOnClickListener { view : View ->
             view.findNavController().navigate(R.id.action_waitingRoomFragment_to_gameFragment)
         }

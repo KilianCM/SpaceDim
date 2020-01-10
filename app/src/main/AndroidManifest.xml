@@ -10,6 +10,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".score.ScoreActivity">
+        </activity>
         <activity android:name=".game.GameActivity">
         </activity>
         <activity android:name=".home.HomeActivity">

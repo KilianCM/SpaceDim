@@ -4,13 +4,24 @@
             android:id="@+id/navigation" app:startDestination="@id/waitingRoomFragment">
 
     <fragment android:id="@+id/waitingRoomFragment"
-              android:name="com.lpdim.spacedim.game.WaitingRoomFragment"
+              android:name="com.lpdim.spacedim.game.waiting.WaitingRoomFragment"
               android:label="WaitingRoomFragment"
               tools:layout="@layout/fragment_waiting_room"  >
-        <action android:id="@+id/action_waitingRoomFragment_to_gameFragment" app:destination="@id/gameFragment"/>
+        <action android:id="@+id/action_waitingRoomFragment_to_gameFragment"
+                app:destination="@id/gameFragment"/>
     </fragment>
     <fragment android:id="@+id/gameFragment"
-              android:name="com.lpdim.spacedim.game.GameFragment"
-              tools:layout="@layout/fragment_game"
-              android:label="GameFragment"/>
+              android:name="com.lpdim.spacedim.game.play.PlayFragment"
+              tools:layout="@layout/fragment_play"
+              android:label="GameFragment">
+        <action android:id="@+id/action_gameFragment_to_finishFragment" app:destination="@id/finishFragment"/>
+    </fragment>
+    <fragment android:id="@+id/finishFragment"
+              android:name="com.lpdim.spacedim.game.finish.FinishFragment"
+              android:label="FinishFragment"
+              tools:layout="@layout/fragment_finish"  >
+        <action android:id="@+id/action_finishFragment_to_waitingRoomFragment"
+                app:destination="@id/waitingRoomFragment" app:popUpTo="@+id/waitingRoomFragment"
+                app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>
