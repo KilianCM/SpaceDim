@@ -16,6 +16,7 @@ class HomeActivity : AppCompatActivity() {
 
     fun launchGame(view: View) {
         val intent = Intent(this, GameActivity::class.java).apply {
+            //TODO: put extra with roomname and userid
             //putExtra(EXTRA_MESSAGE, message)
         }
         startActivity(intent)
