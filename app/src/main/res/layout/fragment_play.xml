@@ -8,10 +8,23 @@
             android:orientation="vertical">
 
         <TextView
-                android:text="Game"
+                android:id="@+id/textViewAction"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/textView2"/>
+                android:layout_height="wrap_content" android:layout_marginTop="10dp" android:layout_marginBottom="40dp"
+                android:gravity="center" android:text="En attente du serveur..." android:textSize="24sp"/>
 
+        <LinearLayout
+                android:id="@+id/layoutUiElementRow1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/layoutUiElementRow2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginBottom="40dp"
+                android:orientation="horizontal">
+        </LinearLayout>
         <Button
                 android:text="Button for dev"
                 android:layout_width="match_parent"
