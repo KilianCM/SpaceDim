@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Checkable
 import android.widget.Switch
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -15,6 +16,8 @@ import androidx.navigation.findNavController
 import com.lpdim.spacedim.game.GameViewModel
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.databinding.FragmentPlayBinding
+import com.lpdim.spacedim.game.MoshiService
+import com.lpdim.spacedim.game.WebSocketLiveData
 import com.lpdim.spacedim.game.model.Event
 import com.lpdim.spacedim.game.model.EventType
 import com.lpdim.spacedim.game.model.UIElement
@@ -48,12 +51,12 @@ class PlayFragment : Fragment() {
     }
 
     private fun finishGame() {
-        view?.findNavController()?.navigate(R.id.action_gameFragment_to_finishFragment)
+        //view?.findNavController()?.navigate(R.id.action_gameFragment_to_finishFragment)
     }
 
     private fun observeEvent(event: Event) {
          when(event.type) {
-             EventType.GAME_STARTED, EventType.NEXT_LEVEL -> Timber.d("Start")//generateUI(event)
+             EventType.GAME_STARTED, EventType.NEXT_LEVEL -> generateUI(event)
              EventType.NEXT_ACTION -> updateAction(event as Event.NextAction)
              EventType.GAME_OVER -> finishGame()
          }
@@ -64,36 +67,49 @@ class PlayFragment : Fragment() {
     }
 
     private fun generateUI(event: Event) {
-        var castedEvent: Event? = null
+        var castedEvent: Event?
         if(event is Event.GameStarted || event is Event.NextLevel) {
             castedEvent = event as Event.GameStarted
             castedEvent.uiElementList.forEachIndexed { index: Int, uiElement: UIElement ->
-                //generateViewComponent(index, uiElement)
+                generateViewComponent(index, uiElement)
             }
         }
     }
 
+    /**
+     * Generate UI element (BUTTON or SWITCH) and add it to layout
+     */
     private fun generateViewComponent(index: Int, uiElement: UIElement) {
         var layout = layoutUiElementRow1
         if(index % 2 == 0) layout = layoutUiElementRow2
 
-        Timber.d("Generating ui")
+        Timber.d("Generating ${uiElement.type}")
 
-        val generatedElement: Button? = null
+        var generatedElement: Button? = null
         when(uiElement.type) {
-            UIType.BUTTON -> Button(activity)
-            UIType.SWITCH -> Switch(activity)
-            UIType.SHAKE -> Button(activity) //TODO
-            else -> Button(activity) //Button by default
+            UIType.BUTTON -> generatedElement = Button(activity)
+            UIType.SWITCH -> generatedElement = Switch(activity)
+            UIType.SHAKE -> generatedElement = Button(activity) //TODO
         }
 
-        generatedElement?.id = uiElement.id
-        generatedElement?.text = uiElement.content
-        generatedElement?.setOnClickListener {
-            //sendPlayerAction(id)
+        generatedElement.id = uiElement.id
+        generatedElement.text = uiElement.content
+        generatedElement.setOnClickListener {
+            sendPlayerAction(uiElement)
             Timber.d("Click on ${it.id}")
         }
 
         layout.addView(generatedElement)
+    }
+
+    /**
+     * Send a PlayerAction event to websocket
+     */
+    private fun sendPlayerAction(uiElement: UIElement) {
+        //WIP
+        val playerAction = Event.PlayerAction(uiElement)
+        val playerActionAdapter = MoshiService.moshi.adapter(Event.PlayerAction::class.java)
+        val playerActionJson = playerActionAdapter.toJson(playerAction)
+        WebSocketLiveData.webSocket?.send(playerActionJson)
     }
 }
