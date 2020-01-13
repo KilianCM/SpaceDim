@@ -49,10 +49,7 @@ class WebSocketLiveData : LiveData<Event>() {
         private val NORMAL_CLOSURE_STATUS = 1000
 
         override fun onOpen(webSocket: WebSocket, response: Response) {
-            //TODO: remove this and add a button to be ready
-            //webSocket.close(NORMAL_CLOSURE_STATUS, "Goodbye !")
             Timber.d("Connection OK")
-
         }
 
         override fun onMessage(webSocket: WebSocket, text: String) {

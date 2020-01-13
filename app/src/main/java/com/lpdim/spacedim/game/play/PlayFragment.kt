@@ -38,10 +38,6 @@ class PlayFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
 
-        binding.buttonFinish.setOnClickListener { view ->
-            finishGame()
-        }
-
         viewModel.event.observe(this, Observer { event ->
             Timber.d(event.toString())
             observeEvent(event)
@@ -51,7 +47,7 @@ class PlayFragment : Fragment() {
     }
 
     private fun finishGame() {
-        //view?.findNavController()?.navigate(R.id.action_gameFragment_to_finishFragment)
+        view?.findNavController()?.navigate(R.id.action_gameFragment_to_finishFragment)
     }
 
     private fun observeEvent(event: Event) {
@@ -106,10 +102,10 @@ class PlayFragment : Fragment() {
      * Send a PlayerAction event to websocket
      */
     private fun sendPlayerAction(uiElement: UIElement) {
-        //WIP
         val playerAction = Event.PlayerAction(uiElement)
-        val playerActionAdapter = MoshiService.moshi.adapter(Event.PlayerAction::class.java)
-        val playerActionJson = playerActionAdapter.toJson(playerAction)
+        val eventAdapter = MoshiService.moshi.adapter(Event::class.java)
+        val playerActionJson = eventAdapter.toJson(playerAction)
+
         WebSocketLiveData.webSocket?.send(playerActionJson)
     }
 }
