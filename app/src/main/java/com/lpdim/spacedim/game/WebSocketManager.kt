@@ -50,7 +50,6 @@ class WebSocketLiveData : LiveData<Event>() {
 
         override fun onOpen(webSocket: WebSocket, response: Response) {
             //TODO: remove this and add a button to be ready
-            webSocket.send("{\"type\" :\"READY\", \"value\":true}")
             //webSocket.close(NORMAL_CLOSURE_STATUS, "Goodbye !")
             Timber.d("Connection OK")
 

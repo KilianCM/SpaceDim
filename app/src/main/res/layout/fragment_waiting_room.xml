@@ -12,10 +12,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/textViewAction"/>
 
+        <TextView
+                android:id="@+id/playerOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/playerTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+        <TextView
+                android:id="@+id/playerThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+        <Button
+                android:text="Ready"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/buttonReady"/>
+
         <Button
                 android:text="Button for dev"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/button"/>
+                android:layout_height="wrap_content" android:id="@+id/buttonDev"/>
     </LinearLayout>
 
 </layout>
