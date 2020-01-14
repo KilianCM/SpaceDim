@@ -52,7 +52,7 @@ class PlayFragment : Fragment() {
 
     private fun observeEvent(event: Event) {
          when(event.type) {
-             EventType.GAME_STARTED, EventType.NEXT_LEVEL -> generateUI(event)
+             EventType.GAME_STARTED, EventType.NEXT_LEVEL -> castEvent(event)
              EventType.NEXT_ACTION -> updateAction(event as Event.NextAction)
              EventType.GAME_OVER -> finishGame()
          }
@@ -62,13 +62,16 @@ class PlayFragment : Fragment() {
         textViewAction.text = event.action.sentence
     }
 
-    private fun generateUI(event: Event) {
-        var castedEvent: Event?
-        if(event is Event.GameStarted || event is Event.NextLevel) {
-            castedEvent = event as Event.GameStarted
-            castedEvent.uiElementList.forEachIndexed { index: Int, uiElement: UIElement ->
-                generateViewComponent(index, uiElement)
-            }
+    private fun castEvent(event: Event) {
+        when(event) {
+            is Event.GameStarted -> generateUI(event.uiElementList)
+            is Event.NextLevel -> generateUI(event.uiElementList)
+        }
+    }
+
+    private fun generateUI(uiElements: List<UIElement>) {
+        uiElements.forEachIndexed { index: Int, uiElement: UIElement ->
+            generateViewComponent(index, uiElement)
         }
     }
 
