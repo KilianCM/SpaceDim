@@ -7,11 +7,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.lpdim.spacedim.R
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.lpdim.spacedim.databinding.FragmentWaitingRoomBinding
 import com.lpdim.spacedim.game.GameViewModel
+import com.lpdim.spacedim.game.MoshiService.eventAdapter
 import com.lpdim.spacedim.game.WebSocketLiveData.Companion.webSocket
 import com.lpdim.spacedim.game.model.Event
 import com.lpdim.spacedim.game.model.EventType
@@ -34,11 +36,6 @@ class WaitingRoomFragment : Fragment() {
 
         binding.buttonReady.setOnClickListener { view : View ->
             webSocket?.send("{\"type\" :\"READY\", \"value\":true}")
-
-        }
-
-        binding.buttonDev.setOnClickListener { view : View ->
-            view.findNavController().navigate(R.id.action_waitingRoomFragment_to_gameFragment)
         }
 
         viewModel.event.observe(this, Observer { event ->
@@ -50,8 +47,14 @@ class WaitingRoomFragment : Fragment() {
         return binding.root
     }
 
-    private fun finishGame() {
-        view?.findNavController()?.navigate(R.id.action_waitingRoomFragment_to_gameFragment)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Timber.d(arguments.toString())
+    }
+
+    private fun launchGame(event: Event) {
+        val bundle = bundleOf("gameStarted" to eventAdapter.toJson(event))
+        view?.findNavController()?.navigate(R.id.action_waitingRoomFragment_to_gameFragment, bundle)
     }
 
     private fun castEvent(event: Event){
@@ -74,7 +77,7 @@ class WaitingRoomFragment : Fragment() {
         Timber.d(event.toString())
         when(event.type) {
             EventType.WAITING_FOR_PLAYER -> castEvent(event)
-            EventType.GAME_STARTED -> finishGame()
+            EventType.GAME_STARTED -> launchGame(event)
         }
     }
 }

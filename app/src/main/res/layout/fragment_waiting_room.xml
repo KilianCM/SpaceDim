@@ -8,9 +8,10 @@
             android:orientation="vertical">
 
         <TextView
-                android:text="Waiting Room"
+                android:id="@+id/textViewWaiting"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/textViewAction"/>
+                android:layout_height="wrap_content" android:gravity="center" android:text="@string/waiting_room"
+                android:textSize="36sp"/>
 
         <TextView
                 android:id="@+id/playerOne"
@@ -30,14 +31,10 @@
                 android:text="TextView" />
 
         <Button
-                android:text="Ready"
+                android:id="@+id/buttonReady"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/buttonReady"/>
+                android:layout_height="wrap_content" android:text="@string/ready_button"/>
 
-        <Button
-                android:text="Button for dev"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/buttonDev"/>
     </LinearLayout>
 
 </layout>

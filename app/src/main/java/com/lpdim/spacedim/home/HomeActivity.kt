@@ -7,6 +7,7 @@ import android.view.View
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.game.GameActivity
 import com.lpdim.spacedim.game.MoshiService
+import com.lpdim.spacedim.game.MoshiService.userAdapter
 import com.lpdim.spacedim.game.WebSocketLiveData
 import com.lpdim.spacedim.game.model.User
 import kotlinx.android.synthetic.main.activity_home.*
@@ -46,9 +47,8 @@ class HomeActivity : AppCompatActivity() {
                 response.use {
                     if(response.isSuccessful){
                         try {
-                            val adapter = MoshiService.moshi.adapter(User::class.java)
                             response.body?.let {
-                                val user = adapter.fromJson(it.source())
+                                val user = userAdapter.fromJson(it.source())
                                 userId = user?.id
                             }
                         } catch (e: Exception) {

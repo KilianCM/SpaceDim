@@ -1,9 +1,7 @@
 package com.lpdim.spacedim.game
 
-import com.lpdim.spacedim.game.model.Event
-import com.lpdim.spacedim.game.model.EventType
-import com.lpdim.spacedim.game.model.UIElement
-import com.lpdim.spacedim.game.model.UIType
+import com.lpdim.spacedim.game.model.*
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -34,4 +32,8 @@ object MoshiService {
         )
         .add(KotlinJsonAdapterFactory())
         .build()
+
+    val eventAdapter: JsonAdapter<Event> = moshi.adapter(Event::class.java)
+    val userAdapter: JsonAdapter<User> = MoshiService.moshi.adapter(User::class.java)
+
 }

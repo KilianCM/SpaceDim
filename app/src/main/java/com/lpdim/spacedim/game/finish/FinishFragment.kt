@@ -10,6 +10,9 @@ import androidx.navigation.findNavController
 
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.databinding.FragmentFinishBinding
+import com.lpdim.spacedim.game.MoshiService.eventAdapter
+import com.lpdim.spacedim.game.model.Event
+import kotlinx.android.synthetic.main.fragment_finish.*
 
 
 class FinishFragment : Fragment() {
@@ -25,6 +28,27 @@ class FinishFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        arguments?.let {
+            val event = eventAdapter.fromJson(it.getString("gameOver")) as Event.GameOver
+            updateUI(event)
+        }
+    }
+
+    private fun updateUI(event: Event.GameOver) {
+        textViewFinishLevel.text = "${resources.getString(R.string.level_finish)} ${event.level}"
+
+        if(event.win) {
+            textViewGameOver.text = resources.getString(R.string.win)
+        } else {
+            textViewGameOver.text = resources.getString(R.string.loose)
+        }
+
+        textViewScoreValue.text = event.score.toString()
     }
 
 }

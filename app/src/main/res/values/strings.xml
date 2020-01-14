@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">SpaceDim</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="play_again">Play Again</string>
+    <string name="play_again">Rejouer</string>
+    <string name="ready_button">Je suis prêt !</string>
+    <string name="waiting_room">Salle d\'attente</string>
+    <string name="level_finish">Vous avez atteint le niveau</string>
+    <string name="win">GAGNÉ !</string>
+    <string name="loose">PERDU !</string>
+    <string name="score">Score</string>
 </resources>

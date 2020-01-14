@@ -1,21 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <TextView
-                android:text="Finish"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/textViewAction"/>
+                android:layout_height="match_parent">
 
-        <Button
-                android:text="@string/play_again"
+        <TextView
+                android:id="@+id/textViewGameOver"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/buttonPlayAgain"/>
-    </LinearLayout>
+                android:layout_height="wrap_content" android:layout_marginTop="32dp"
+                android:gravity="center" android:text="Fin"
+                android:textSize="36sp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+                android:id="@+id/textViewFinishLevel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center" android:text="@string/level_finish"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/buttonPlayAgain"
+                app:layout_constraintTop_toBottomOf="@+id/textViewGameOver"
+                tools:layout_editor_absoluteX="-37dp"/>
+        <Button
+                android:id="@+id/buttonPlayAgain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp" android:text="@string/play_again"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+                android:id="@+id/textViewScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp" android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp" android:text="@string/score"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/textViewFinishLevel" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/textViewGameOver"/>
+        <TextView
+                android:id="@+id/textViewScoreValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp" android:layout_marginEnd="8dp"
+                android:textSize="36sp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewScore"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

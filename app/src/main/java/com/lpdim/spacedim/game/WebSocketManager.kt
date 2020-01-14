@@ -3,6 +3,7 @@ package com.lpdim.spacedim.game
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.lpdim.spacedim.game.MoshiService.eventAdapter
 import com.lpdim.spacedim.game.model.Event
 import okhttp3.*
 import okio.ByteString
@@ -16,8 +17,6 @@ class WebSocketLiveData : LiveData<Event>() {
         var webSocket: WebSocket? = null
         var client = OkHttpClient()
     }
-
-    private val eventJsonAdapter = MoshiService.moshi.adapter(Event::class.java)
 
     override fun onInactive() {
         super.onInactive()
@@ -72,7 +71,7 @@ class WebSocketLiveData : LiveData<Event>() {
 
     private fun processEvent(value: String) {
         try {
-            val event = eventJsonAdapter.fromJson(value)
+            val event = eventAdapter.fromJson(value)
             postValue(event)
         } catch (e: Exception) {
             Timber.e("Invalid event model")
