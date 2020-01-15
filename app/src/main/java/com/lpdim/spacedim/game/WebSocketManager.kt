@@ -3,6 +3,7 @@ package com.lpdim.spacedim.game
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.lpdim.spacedim.api.API
 import com.lpdim.spacedim.game.MoshiService.eventAdapter
 import com.lpdim.spacedim.game.model.Event
 import okhttp3.*
@@ -30,7 +31,7 @@ class WebSocketLiveData : LiveData<Event>() {
     }
 
     fun connect(roomName: String, userId: Int) {
-        val url = "ws://vps769278.ovh.net:8081/ws/join/$roomName/$userId"
+        val url = API.BASE_URL_WS + API.JOIN_ROOM + "$roomName/$userId"
         Timber.d("Try to connect to $url")
         val request = Request.Builder().url(url).build()
         webSocket = client.newWebSocket(request, listener)

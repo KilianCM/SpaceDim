@@ -5,11 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.lpdim.spacedim.R
+import com.lpdim.spacedim.api.API
 import com.lpdim.spacedim.game.GameActivity
 import com.lpdim.spacedim.game.MoshiService
 import com.lpdim.spacedim.game.MoshiService.userAdapter
+import com.lpdim.spacedim.game.MoshiService.userPostAdapter
 import com.lpdim.spacedim.game.WebSocketLiveData
+import com.lpdim.spacedim.game.WebSocketLiveData.Companion.client
 import com.lpdim.spacedim.game.model.User
+import com.lpdim.spacedim.game.model.UserPost
+import com.squareup.moshi.Json
+import okhttp3.RequestBody.Companion.toRequestBody
 import kotlinx.android.synthetic.main.activity_home.*
 import okhttp3.*
 import timber.log.Timber
@@ -21,9 +27,14 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        textBoxName.text
+
+        //TODO: ajouter un bouton "S'inscrire" qui lance un Dialog (https://developer.android.com/guide/topics/ui/dialogs) avec un champs pour saisir le nouveau username
+        //TODO: ajouter bouton "Jouer" qui récupère le text de l'input textBoxName et qui ouvre un Dialog pour saisir le nom de la room
     }
 
+    /**
+     * Launch the GameActivity passing the userid and the room name as parameters
+     */
     fun launchGame(view: View) {
         val intent = Intent(this, GameActivity::class.java).apply {
             //TODO: put extra with roomname and userid
@@ -32,9 +43,14 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun testIfUserExist(username: String): Int?{
+
+    /**
+     * Call API to find user by his username
+     * @return userId|null the id of the found user or null if the user doesn't exist
+     */
+    private fun testIfUserExist(username: String): Int?{
         var userId: Int? = null
-        val url = "http://vps769278.ovh.net/doc/api/user/find/$textBoxName"
+        val url = API.BASE_URL_HTTP + API.GET_USER + username
         val request = Request.Builder()
             .url(url)
             .build()
@@ -58,7 +74,33 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         })
-
         return userId
+    }
+
+    /**
+     * Create a new user
+     */
+    private fun registerUser(username: String) {
+        val userPost = UserPost(username)
+        val requestBody = userPostAdapter.toJson(userPost).toRequestBody()
+
+        val request = Request.Builder()
+            .url(API.BASE_URL_HTTP + API.REGISTER_USER)
+            .post(requestBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                    //TODO: Toast utilisateur créé
+                }
+            }
+        })
     }
 }

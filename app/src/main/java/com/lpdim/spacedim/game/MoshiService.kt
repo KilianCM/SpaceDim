@@ -34,6 +34,7 @@ object MoshiService {
         .build()
 
     val eventAdapter: JsonAdapter<Event> = moshi.adapter(Event::class.java)
-    val userAdapter: JsonAdapter<User> = MoshiService.moshi.adapter(User::class.java)
+    val userAdapter: JsonAdapter<User> = moshi.adapter(User::class.java)
+    val userPostAdapter: JsonAdapter<UserPost> = moshi.adapter(UserPost::class.java)
 
 }
