@@ -34,4 +34,13 @@
             tools:layout_editor_absoluteX="118dp"
             tools:layout_editor_absoluteY="95dp" />
 
+    <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="163dp"
+            android:layout_height="43dp"
+            android:text="Register"
+            android:onClick="registerUser"
+            tools:layout_editor_absoluteX="125dp"
+            tools:layout_editor_absoluteY="298dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

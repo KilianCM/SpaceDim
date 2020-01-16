@@ -1,9 +1,14 @@
 package com.lpdim.spacedim.home
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
+import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.api.API
 import com.lpdim.spacedim.game.GameActivity
@@ -24,6 +29,7 @@ import java.lang.Exception
 
 class HomeActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -31,6 +37,7 @@ class HomeActivity : AppCompatActivity() {
         //TODO: ajouter un bouton "S'inscrire" qui lance un Dialog (https://developer.android.com/guide/topics/ui/dialogs) avec un champs pour saisir le nouveau username
         //TODO: ajouter bouton "Jouer" qui récupère le text de l'input textBoxName et qui ouvre un Dialog pour saisir le nom de la room
     }
+
 
     /**
      * Launch the GameActivity passing the userid and the room name as parameters
@@ -97,10 +104,12 @@ class HomeActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
-
                     //TODO: Toast utilisateur créé
                 }
             }
         })
     }
+
+
+
 }
