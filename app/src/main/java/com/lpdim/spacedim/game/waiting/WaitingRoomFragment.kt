@@ -31,18 +31,24 @@ class WaitingRoomFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
 
-        //TODO: get extra of intent to replace hardcoded values
-        viewModel.event.connect("test_germain", 87)
+        val roomName = activity?.intent?.extras?.getString("roomName")
+        val userId = activity?.intent?.extras?.getInt("userId")
+
+        roomName?.let { roomName ->
+            userId?.let { userId ->
+                viewModel.event.connect(roomName, userId)
+            }
+        }
 
         binding.buttonReady.setOnClickListener { view : View ->
-            webSocket?.send("{\"type\" :\"READY\", \"value\":true}")
+            val event = Event.Ready(true)
+            webSocket?.send(eventAdapter.toJson(event))
         }
 
         viewModel.event.observe(this, Observer { event ->
             Timber.d(event.toString())
             observeEvent(event)
         })
-
 
         return binding.root
     }
@@ -58,17 +64,11 @@ class WaitingRoomFragment : Fragment() {
     }
 
     private fun castEvent(event: Event){
-        var castedEvent: Event
-
         if(event is Event.WaitingForPlayer) {
-            castedEvent = event as Event.WaitingForPlayer
-            castedEvent.userList.forEach(){
+            event.userList.forEach {
                 playerOne.text = ("${it.name} : ${it.state}")
                 Timber.d("Le joueur: ${it.name} Etat : ${it.state}")
-                // TODO create UI element
             }
-
-
         }
     }
 

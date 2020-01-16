@@ -1,25 +1,20 @@
 package com.lpdim.spacedim.home
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.api.API
 import com.lpdim.spacedim.game.GameActivity
-import com.lpdim.spacedim.game.MoshiService
 import com.lpdim.spacedim.game.MoshiService.userAdapter
 import com.lpdim.spacedim.game.MoshiService.userPostAdapter
 import com.lpdim.spacedim.game.WebSocketLiveData
 import com.lpdim.spacedim.game.WebSocketLiveData.Companion.client
-import com.lpdim.spacedim.game.model.User
 import com.lpdim.spacedim.game.model.UserPost
-import com.squareup.moshi.Json
 import okhttp3.RequestBody.Companion.toRequestBody
 import kotlinx.android.synthetic.main.activity_home.*
 import okhttp3.*
@@ -34,41 +29,15 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         btnRegister.setOnClickListener{
-            val builder = AlertDialog.Builder(this)
-            val inflater = HomeActivity().layoutInflater;
-            builder.setView(inflater.inflate(R.layout.activity_home, null))
-            builder.setTitle("Registering")
-            builder.create()
-            //TODO: Rajouter l'editText pour taper le nom de l'utilisateur
+            displayRegisterDialog()
         }
-        //TODO: ajouter un bouton "S'inscrire" qui lance un Dialog (https://developer.android.com/guide/topics/ui/dialogs) avec un champs pour saisir le nouveau username
-        //TODO: ajouter bouton "Jouer" qui récupère le text de l'input textBoxName et qui ouvre un Dialog pour saisir le nom de la room
+        btnLaunchGame.setOnClickListener {
+            checkUser(editTextName.text.toString())
+        }
     }
 
-
-    /**
-     * Launch the GameActivity passing the userid and the room name as parameters
-     */
-    fun launchGame(view: View) {
-        val intent = Intent(this, GameActivity::class.java).apply {
-            //TODO: put extra with roomname and userid
-            //putExtra(EXTRA_MESSAGE, message)
-        }
-        startActivity(intent)
-    }
-
-
-    /**
-     * Call API to find user by his username
-     * @return userId|null the id of the found user or null if the user doesn't exist
-     */
-    private fun testIfUserExist(username: String): Int?{
-        var userId: Int? = null
-        val url = API.BASE_URL_HTTP + API.GET_USER + username
-        val request = Request.Builder()
-            .url(url)
-            .build()
-        WebSocketLiveData.client.newCall(request).enqueue(object : Callback {
+    private fun checkUser(username: String) {
+        testIfUserExist(username, object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
             }
@@ -79,16 +48,78 @@ class HomeActivity : AppCompatActivity() {
                         try {
                             response.body?.let {
                                 val user = userAdapter.fromJson(it.source())
-                                userId = user?.id
+                                val userId = user?.id
+                                userId?.let {
+                                    runOnUiThread {
+                                        displayRoomSelectDialog(userId)
+                                    }
+                                }
                             }
                         } catch (e: Exception) {
+                            e.printStackTrace()
                             Timber.d("Failed to deserialize user")
+                            runOnUiThread {
+                                Toast.makeText(this@HomeActivity, getString(R.string.user_not_exist), Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
                 }
             }
         })
-        return userId
+    }
+
+    private fun displayRoomSelectDialog(userId: Int) {
+        val builder = AlertDialog.Builder(this)
+        val view = layoutInflater.inflate(R.layout.room_selection_dialog, null)
+        builder.setView(view)
+        builder.setTitle(getString(R.string.room_selection_title))
+            .setPositiveButton(R.string.ok) { dialog, id ->
+                val roomName = view.findViewById<TextView>(R.id.editTextRoomName).text
+                launchGame(roomName.toString(), userId)
+            }
+            .setNegativeButton(R.string.cancel) { dialog, id ->
+                dialog.cancel()
+            }
+        builder.create().show()
+    }
+
+    private fun displayRegisterDialog() {
+        val builder = AlertDialog.Builder(this)
+        val view = layoutInflater.inflate(R.layout.register_dialog, null)
+        builder.setView(view)
+        builder.setTitle(getString(R.string.register_title))
+            .setPositiveButton(R.string.ok) { dialog, id ->
+                val username = view.findViewById<TextView>(R.id.editTextRegister).text
+                registerUser(username.toString())
+            }
+            .setNegativeButton(R.string.cancel) { dialog, id ->
+                dialog.cancel()
+            }
+        builder.create().show()
+    }
+
+
+    /**
+     * Launch the GameActivity passing the userid and the room name as parameters
+     */
+    fun launchGame(roomName: String, userId: Int) {
+        val intent = Intent(this, GameActivity::class.java).apply {
+            putExtra("roomName", roomName)
+            putExtra("userId", userId)
+        }
+        startActivity(intent)
+    }
+
+
+    /**
+     * Call API to find user by his username
+     */
+    private fun testIfUserExist(username: String, callback: Callback) {
+        val url = API.BASE_URL_HTTP + API.GET_USER + username
+        val request = Request.Builder()
+            .url(url)
+            .build()
+        WebSocketLiveData.client.newCall(request).enqueue(callback)
     }
 
     /**
@@ -106,13 +137,17 @@ class HomeActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(this@HomeActivity, getString(R.string.error_register), Toast.LENGTH_LONG).show()
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
-                    Toast.makeText(this@HomeActivity, "User $username are created", Toast.LENGTH_LONG).show()
-                    //TODO: Toast utilisateur créé
+                    runOnUiThread {
+                        Toast.makeText(this@HomeActivity, getString(R.string.user_registered, username), Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         })
