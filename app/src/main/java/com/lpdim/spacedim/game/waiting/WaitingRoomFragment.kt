@@ -50,6 +50,10 @@ class WaitingRoomFragment : Fragment() {
             observeEvent(event)
         })
 
+        viewModel.userList.observe(this, Observer { list ->
+            Timber.d(list.toString())
+        })
+
         return binding.root
     }
 

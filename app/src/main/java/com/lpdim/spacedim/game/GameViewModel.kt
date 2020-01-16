@@ -1,6 +1,10 @@
 package com.lpdim.spacedim.game
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.lpdim.spacedim.game.model.Event
+import com.lpdim.spacedim.game.model.User
 
 class GameViewModel : ViewModel() {
     private val _event = WebSocketLiveData.instance
@@ -9,4 +13,20 @@ class GameViewModel : ViewModel() {
         get() {
             return _event
         }
+
+    val userList = Transformations.map(event) {
+        if(it is Event.WaitingForPlayer) {
+            return@map it.userList
+        } else {
+            // nothing for the moment...
+        }
+    }
+
+    val timer = Transformations.map(event) {
+        if(it is Event.NextAction) {
+            return@map it.action.time
+        } else {
+            
+        }
+    }
 }
