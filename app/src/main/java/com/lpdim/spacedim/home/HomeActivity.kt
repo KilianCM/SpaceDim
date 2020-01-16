@@ -33,7 +33,14 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
+        btnRegister.setOnClickListener{
+            val builder = AlertDialog.Builder(this)
+            val inflater = HomeActivity().layoutInflater;
+            builder.setView(inflater.inflate(R.layout.activity_home, null))
+            builder.setTitle("Registering")
+            builder.create()
+            //TODO: Rajouter l'editText pour taper le nom de l'utilisateur
+        }
         //TODO: ajouter un bouton "S'inscrire" qui lance un Dialog (https://developer.android.com/guide/topics/ui/dialogs) avec un champs pour saisir le nouveau username
         //TODO: ajouter bouton "Jouer" qui récupère le text de l'input textBoxName et qui ouvre un Dialog pour saisir le nom de la room
     }
@@ -104,6 +111,7 @@ class HomeActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 response.use {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                    Toast.makeText(this@HomeActivity, "User $username are created", Toast.LENGTH_LONG).show()
                     //TODO: Toast utilisateur créé
                 }
             }
