@@ -22,4 +22,6 @@
     <string name="room_name">Nom de la partie</string>
     <string name="room_selection_title">Choix de la partie</string>
     <string name="score"> Score </string>
+    <string name="waiting_for_server">En attente du serveur…</string>
+    <string name="seconds_left">secondes restantes</string>
 </resources>

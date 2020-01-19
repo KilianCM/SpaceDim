@@ -2,6 +2,7 @@ package com.lpdim.spacedim.game.play
 
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,10 +25,12 @@ import com.lpdim.spacedim.game.model.UIElement
 import com.lpdim.spacedim.game.model.UIType
 import kotlinx.android.synthetic.main.fragment_play.*
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 class PlayFragment : Fragment() {
 
     private lateinit var viewModel: GameViewModel
+    private lateinit var countDownTimer: CountDownTimer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +44,10 @@ class PlayFragment : Fragment() {
         viewModel.event.observe(this, Observer { event ->
             Timber.d(event.toString())
             observeEvent(event)
+        })
+
+        viewModel.timer.observe(this, Observer { timer ->
+            createAndStartTimer(timer)
         })
 
         return binding.root
@@ -58,6 +65,21 @@ class PlayFragment : Fragment() {
                 Timber.e("Impossible to generate action buttons")
             }
         }
+    }
+
+    private fun createAndStartTimer(time: Long) {
+        countDownTimer = object: CountDownTimer(time, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val timerText = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished).toString() + " " + getString(R.string.seconds_left)
+                try {
+                    textViewTimer.text = timerText
+                } catch(e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            override fun onFinish() {  }
+        }
+        countDownTimer.start()
     }
 
     private fun finishGame(event: Event.GameOver) {

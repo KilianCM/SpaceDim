@@ -18,7 +18,7 @@ class GameViewModel : ViewModel() {
         if(it is Event.WaitingForPlayer) {
             return@map it.userList
         } else {
-            // nothing for the moment...
+            return@map emptyList<User>()
         }
     }
 
@@ -26,7 +26,7 @@ class GameViewModel : ViewModel() {
         if(it is Event.NextAction) {
             return@map it.action.time
         } else {
-            
+            return@map 0.toLong()
         }
     }
 }
