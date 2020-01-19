@@ -54,4 +54,8 @@ dependencies {
 
     // ViewModel
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+
+    // sensey lib for shake dectection
+    implementation 'com.github.nisrulz:sensey:1.8.0'
+
 }

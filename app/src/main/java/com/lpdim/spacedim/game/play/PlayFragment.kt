@@ -26,6 +26,9 @@ import com.lpdim.spacedim.game.model.UIType
 import kotlinx.android.synthetic.main.fragment_play.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import com.github.nisrulz.sensey.Sensey
+import com.github.nisrulz.sensey.ShakeDetector
+
 
 class PlayFragment : Fragment() {
 
@@ -58,6 +61,7 @@ class PlayFragment : Fragment() {
 
         arguments?.let {
             try {
+                //get the GameStarted event from the WaitingRoomFragment to generate the first action buttons
                 val event = eventAdapter.fromJson(it.getString("gameStarted")) as Event.GameStarted
                 generateUI(event.uiElementList)
             } catch (e: Exception) {
@@ -67,6 +71,10 @@ class PlayFragment : Fragment() {
         }
     }
 
+    /**
+     * Create the countdown timer for each action to do
+     * @param timer the starting time
+     */
     private fun createAndStartTimer(time: Long) {
         countDownTimer = object: CountDownTimer(time, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -82,27 +90,49 @@ class PlayFragment : Fragment() {
         countDownTimer.start()
     }
 
+    /**
+     * On GameOver event, navigate to FinishFragment passing the event as bundle
+     * (to display score and reached level on FinishFragment)
+     * @param event the GameOver event
+     */
     private fun finishGame(event: Event.GameOver) {
         val bundle = bundleOf("gameOver" to eventAdapter.toJson(event))
         view?.findNavController()?.navigate(R.id.action_gameFragment_to_finishFragment, bundle)
     }
 
+    /**
+     * Dispatch to correct method according to the event type
+     * @param event
+     */
     private fun observeEvent(event: Event) {
          when(event.type) {
              EventType.NEXT_LEVEL -> nextLevel(event as Event.NextLevel)
              EventType.NEXT_ACTION -> updateAction(event as Event.NextAction)
              EventType.GAME_OVER -> finishGame(event as Event.GameOver)
+             else -> return
          }
     }
 
+    /**
+     * Update the action sentence at each NextAction event
+     * @param event the NextAction event to get the sentence
+     */
     private fun updateAction(event: Event.NextAction) {
         textViewAction.text = event.action.sentence
     }
 
+    /**
+     * On each NextLevel event, launch the regeneration of the UI (buttons)
+     * @param event the NextLevel event to get the UIElementList
+     */
     private fun nextLevel(event: Event.NextLevel) {
         generateUI(event.uiElementList)
     }
 
+    /**
+     * Browse the UI Elements list to launch the generation
+     * @param uiElements list of UI elements to generate
+     */
     private fun generateUI(uiElements: List<UIElement>) {
         uiElements.forEachIndexed { index: Int, uiElement: UIElement ->
             generateViewComponent(index, uiElement)
@@ -111,32 +141,60 @@ class PlayFragment : Fragment() {
 
     /**
      * Generate UI element (BUTTON or SWITCH) and add it to layout
+     * @param index index to know on which row to display element
+     * @param uiElement the element to generate
      */
     private fun generateViewComponent(index: Int, uiElement: UIElement) {
+
+        // Detect if the element is a SHAKE element and create a listener
+        if(uiElement.type == UIType.SHAKE) {
+            createShakeListener(uiElement)
+            return
+        }
+
+        // Determination of the row to display element
         var layout = layoutUiElementRow1
         if(index % 2 == 0) layout = layoutUiElementRow2
 
-        Timber.d("Generating ${uiElement.type}")
-
-        var generatedElement: Button? = null
+        // Create Button or Switch element
+        val generatedElement: Button?
         when(uiElement.type) {
             UIType.BUTTON -> generatedElement = Button(activity)
             UIType.SWITCH -> generatedElement = Switch(activity)
-            UIType.SHAKE -> generatedElement = Button(activity) //TODO
+            else -> return
         }
 
+        // Configure element with uiElement info
         generatedElement.id = uiElement.id
         generatedElement.text = uiElement.content
+
+        // Create a ClickListener to send PlayerAction on click on this element
         generatedElement.setOnClickListener {
             sendPlayerAction(uiElement)
-            Timber.d("Click on ${it.id}")
         }
 
+        // Add uiElement to the view
         layout.addView(generatedElement)
     }
 
     /**
+     * Create and start a shakeListener. When a shake is detected, we send a PlayerAction event to server.
+     * @param uiElement the UIType.SHAKE element to create
+     */
+    private fun createShakeListener(uiElement: UIElement) {
+        val shakeListener = object : ShakeDetector.ShakeListener {
+            override fun onShakeDetected() {
+                sendPlayerAction(uiElement)
+            }
+
+            override fun onShakeStopped() { }
+        }
+        Sensey.getInstance().startShakeDetection(shakeListener)
+    }
+
+    /**
      * Send a PlayerAction event to websocket
+     * @param uiElement the triggered element
      */
     private fun sendPlayerAction(uiElement: UIElement) {
         val playerAction = Event.PlayerAction(uiElement)
