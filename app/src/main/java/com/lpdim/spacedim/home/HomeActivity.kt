@@ -15,6 +15,7 @@ import com.lpdim.spacedim.game.MoshiService.userPostAdapter
 import com.lpdim.spacedim.game.WebSocketLiveData
 import com.lpdim.spacedim.game.WebSocketLiveData.Companion.client
 import com.lpdim.spacedim.game.model.UserPost
+import com.lpdim.spacedim.score.ScoreActivity
 import okhttp3.RequestBody.Companion.toRequestBody
 import kotlinx.android.synthetic.main.activity_home.*
 import okhttp3.*
@@ -33,6 +34,10 @@ class HomeActivity : AppCompatActivity() {
         }
         btnLaunchGame.setOnClickListener {
             checkUser(editTextName.text.toString())
+        }
+
+        btnScore.setOnClickListener {
+            goToScorePage()
         }
     }
 
@@ -151,6 +156,12 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    fun goToScorePage(){
+        val intent = Intent(this, ScoreActivity::class.java)
+        startActivity(intent)
+
     }
 
 

@@ -6,12 +6,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".score.ScoreActivity">
-
     <TextView
             android:id="@+id/tvScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/score"
+            android:text="@string/user_score"
             tools:layout_editor_absoluteX="160dp"
             tools:layout_editor_absoluteY="96dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

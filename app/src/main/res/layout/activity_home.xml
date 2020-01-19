@@ -67,4 +67,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
+    <Button
+            android:id="@+id/btnScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/score"
+            tools:layout_editor_absoluteX="159dp"
+            tools:layout_editor_absoluteY="591dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
