@@ -6,7 +6,7 @@
     <string name="level_finish">Vous avez atteint le niveau</string>
     <string name="win">GAGNÉ !</string>
     <string name="loose">PERDU !</string>
-    <string name="score">Score</string>
+    <string name="user_score">Score :</string>
     <string name="register_label">Inscrivez vous à SpaceDim en saisissant un pseudo :</string>
     <string name="username">Pseudo</string>
     <string name="register_title">Inscription</string>
