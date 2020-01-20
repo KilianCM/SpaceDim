@@ -33,7 +33,7 @@ import com.github.nisrulz.sensey.ShakeDetector
 class PlayFragment : Fragment() {
 
     private lateinit var viewModel: GameViewModel
-    private lateinit var countDownTimer: CountDownTimer
+    private var countDownTimer: CountDownTimer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,6 +76,7 @@ class PlayFragment : Fragment() {
      * @param timer the starting time
      */
     private fun createAndStartTimer(time: Long) {
+        countDownTimer?.cancel()
         countDownTimer = object: CountDownTimer(time, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val timerText = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished).toString() + " " + getString(R.string.seconds_left)
@@ -87,7 +88,7 @@ class PlayFragment : Fragment() {
             }
             override fun onFinish() {  }
         }
-        countDownTimer.start()
+        countDownTimer?.start()
     }
 
     /**
