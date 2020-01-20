@@ -1,10 +1,10 @@
 package com.lpdim.spacedim.home
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.lpdim.spacedim.R
@@ -19,21 +19,33 @@ import com.lpdim.spacedim.score.ScoreActivity
 import okhttp3.RequestBody.Companion.toRequestBody
 import kotlinx.android.synthetic.main.activity_home.*
 import okhttp3.*
-import timber.log.Timber
 import java.io.IOException
 import java.lang.Exception
 
 class HomeActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        btnRegister.setOnClickListener{
-            displayRegisterDialog()
+
+        val userInfos = getUserFromSharedPreferences()
+
+        userInfos.second?.let {
+            editTextName.setText(it, TextView.BufferType.EDITABLE)
+        } ?: run {
+            displayLoginDialog()
         }
+
         btnLaunchGame.setOnClickListener {
-            checkUser(editTextName.text.toString())
+            userInfos.first?.let {
+                displayRoomSelectDialog(it)
+            } ?: kotlin.run {
+                displayLoginDialog()
+            }
+        }
+
+        btnLogin.setOnClickListener {
+            displayLoginDialog()
         }
 
         btnScore.setOnClickListener {
@@ -41,6 +53,9 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Check if User is already created, if not we create a new one
+     */
     private fun checkUser(username: String) {
         testIfUserExist(username, object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -48,31 +63,33 @@ class HomeActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if(response.isSuccessful){
-                        try {
-                            response.body?.let {
-                                val user = userAdapter.fromJson(it.source())
-                                val userId = user?.id
-                                userId?.let {
-                                    runOnUiThread {
-                                        displayRoomSelectDialog(userId)
-                                    }
+                if(response.isSuccessful){
+                    try {
+                        response.body?.let { body ->
+                            val user = userAdapter.fromJson(body.source())
+                            user?.let {
+                                saveUserInSharedPreferences(user.id, user.name)
+                                runOnUiThread {
+                                    editTextName.setText(it.name, TextView.BufferType.EDITABLE)
                                 }
                             }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            Timber.d("Failed to deserialize user")
-                            runOnUiThread {
-                                Toast.makeText(this@HomeActivity, getString(R.string.user_not_exist), Toast.LENGTH_LONG).show()
-                            }
                         }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
+                } else {
+                    // if response is not successful, the user doesn't exist so we need to register a new user
+                    registerUser(username)
+                    // relaunch this method to check the user and launch the roomDialog
+                    checkUser(username)
                 }
             }
         })
     }
 
+    /**
+     * Display a dialog window to type the room name
+     */
     private fun displayRoomSelectDialog(userId: Int) {
         val builder = AlertDialog.Builder(this)
         val view = layoutInflater.inflate(R.layout.room_selection_dialog, null)
@@ -88,14 +105,17 @@ class HomeActivity : AppCompatActivity() {
         builder.create().show()
     }
 
-    private fun displayRegisterDialog() {
+    /**
+     * Display a dialog window to log a user
+     */
+    private fun displayLoginDialog() {
         val builder = AlertDialog.Builder(this)
-        val view = layoutInflater.inflate(R.layout.register_dialog, null)
+        val view = layoutInflater.inflate(R.layout.login_dialog, null)
         builder.setView(view)
-        builder.setTitle(getString(R.string.register_title))
+        builder.setTitle(getString(R.string.login_title))
             .setPositiveButton(R.string.ok) { dialog, id ->
-                val username = view.findViewById<TextView>(R.id.editTextRegister).text
-                registerUser(username.toString())
+                val username = view.findViewById<TextView>(R.id.editTextLogin).text
+                checkUser(username.toString())
             }
             .setNegativeButton(R.string.cancel) { dialog, id ->
                 dialog.cancel()
@@ -107,7 +127,7 @@ class HomeActivity : AppCompatActivity() {
     /**
      * Launch the GameActivity passing the userid and the room name as parameters
      */
-    fun launchGame(roomName: String, userId: Int) {
+    private fun launchGame(roomName: String, userId: Int) {
         val intent = Intent(this, GameActivity::class.java).apply {
             putExtra("roomName", roomName)
             putExtra("userId", userId)
@@ -148,22 +168,51 @@ class HomeActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
-                    runOnUiThread {
-                        Toast.makeText(this@HomeActivity, getString(R.string.user_registered, username), Toast.LENGTH_LONG).show()
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                response.body?.let {
+                    val user = userAdapter.fromJson(it.source())
+                    user?.let { user ->
+                        saveUserInSharedPreferences(user.id, user.name)
                     }
+                }
+                runOnUiThread {
+                    Toast.makeText(this@HomeActivity, getString(R.string.user_registered, username), Toast.LENGTH_LONG).show()
                 }
             }
         })
     }
 
-    fun goToScorePage(){
-        val intent = Intent(this, ScoreActivity::class.java)
-        startActivity(intent)
+    private fun goToScorePage(){
+        val userId = getUserFromSharedPreferences().first
 
+        userId?.let {
+            val intent = Intent(this, ScoreActivity::class.java).apply {
+                putExtra("userId", userId)
+            }
+            startActivity(intent)
+        } ?: run {
+            Toast.makeText(this, getString(R.string.user_not_exist), Toast.LENGTH_LONG).show()
+        }
     }
 
+    private fun getUserFromSharedPreferences(): Pair<Int?, String?> {
+        val sharedPreferences =  getPreferences(Context.MODE_PRIVATE)
 
+        var userId: Int? =  sharedPreferences.getInt(getString(R.string.id_key), -1)
+        if(userId == -1) userId = null
 
+        var userName: String? = sharedPreferences.getString(getString(R.string.username_key), "")
+        if(userName == "") userName = null
+
+        return Pair(userId, userName)
+    }
+
+    private fun saveUserInSharedPreferences(userId: Int, userName: String) {
+        val sharedPreferences =  getPreferences(Context.MODE_PRIVATE)
+
+        val editor = sharedPreferences.edit()
+        editor.putInt(getString(R.string.id_key), userId)
+        editor.putString(getString(R.string.username_key), userName)
+        editor.apply()
+    }
 }

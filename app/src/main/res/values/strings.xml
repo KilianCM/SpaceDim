@@ -7,15 +7,15 @@
     <string name="win">GAGNÉ !</string>
     <string name="loose">PERDU !</string>
     <string name="user_score">Score :</string>
-    <string name="register_label">Inscrivez vous à SpaceDim en saisissant un pseudo :</string>
+    <string name="login_label">Connecte-toi avec ton pseudo pour accéder à SpaceDim :</string>
     <string name="username">Pseudo</string>
-    <string name="register_title">Inscription</string>
+    <string name="login_title">Connexion</string>
     <string name="cancel">Annuler</string>
     <string name="ok">OK</string>
     <string name="user_registered">Le\ joueur %1$s a bien été créé !</string>
     <string name="error_register">Une erreur est survenue durant l\'inscription. Veuillez réessayer.</string>
     <string name="launch_game">Jouer !</string>
-    <string name="register">Inscription</string>
+    <string name="login">Connexion</string>
     <string name="game_launch_explain">Saisissez votre pseudo pour lancer une partie</string>
     <string name="user_not_exist">Ce joueur n\'existe pas, inscrivez vous avant de lancer une partie</string>
     <string name="room_selection_label">Saisissez le nom de la partie à rejoindre :</string>
@@ -24,4 +24,7 @@
     <string name="score"> Score </string>
     <string name="waiting_for_server">En attente du serveur…</string>
     <string name="seconds_left">secondes restantes</string>
+    <string name="id_key">USER_ID</string>
+    <string name="username_key">USER_NAME</string>
+    <string name="login_tip_register">Pas d\'inquiétude, si ton pseudo n\'existe pas, il sera créé !</string>
 </resources>

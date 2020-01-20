@@ -22,7 +22,10 @@ class ScoreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_score)
-        getUserScore(3)
+        val userId = intent.extras?.getInt("userId")
+        userId?.let {
+            getUserScore(userId)
+        }
     }
 
     private fun getUserScore(userId: Int){
