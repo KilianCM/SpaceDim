@@ -17,25 +17,8 @@
                 android:id="@+id/player_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                />
-
-        <TextView
-                android:id="@+id/playerOne"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        <TextView
-                android:id="@+id/playerTwo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-        <TextView
-                android:id="@+id/playerThree"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_weight="1"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <Button
                 android:id="@+id/buttonReady"

@@ -11,6 +11,8 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lpdim.spacedim.databinding.FragmentWaitingRoomBinding
 import com.lpdim.spacedim.game.GameViewModel
 import com.lpdim.spacedim.game.MoshiService.eventAdapter
@@ -32,10 +34,14 @@ class WaitingRoomFragment : Fragment() {
             inflater, R.layout.fragment_waiting_room, container, false)
 
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
+        viewModelAdapter = PlayerAdapter()
+        binding.root.findViewById<RecyclerView>(R.id.player_list).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = viewModelAdapter
+        }
 
         val roomName = activity?.intent?.extras?.getString("roomName")
         val userId = activity?.intent?.extras?.getInt("userId")
-
 
         roomName?.let { roomName ->
             userId?.let { userId ->
@@ -46,6 +52,7 @@ class WaitingRoomFragment : Fragment() {
         binding.buttonReady.setOnClickListener { view : View ->
             val event = Event.Ready(true)
             webSocket?.send(eventAdapter.toJson(event))
+            view.isEnabled = false
         }
 
         viewModel.event.observe(this, Observer { event ->
@@ -71,20 +78,9 @@ class WaitingRoomFragment : Fragment() {
         view?.findNavController()?.navigate(R.id.action_waitingRoomFragment_to_gameFragment, bundle)
     }
 
-    private fun castEvent(event: Event){
-        if(event is Event.WaitingForPlayer) {
-            event.userList.forEach {
-                playerOne.text = ("${it.name} : ${it.state}")
-                Timber.d("Le joueur: ${it.name} Etat : ${it.state}")
-            }
-        }
-    }
-
-
     private fun observeEvent(event: Event) {
         Timber.d(event.toString())
         when(event.type) {
-            EventType.WAITING_FOR_PLAYER -> castEvent(event)
             EventType.GAME_STARTED -> launchGame(event)
         }
     }

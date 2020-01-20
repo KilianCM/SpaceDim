@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.lpdim.spacedim.databinding.PlayerItemViewBinding
 import com.lpdim.spacedim.game.model.User
+import timber.log.Timber
 
 
 class PlayerAdapter: RecyclerView.Adapter<PlayerItemViewHolder>() {
@@ -13,10 +14,7 @@ class PlayerAdapter: RecyclerView.Adapter<PlayerItemViewHolder>() {
     var players: List<User> = emptyList()
         set(value) {
             field = value
-            // For an extra challenge, update this to use the paging library.
-
-            // Notify any registered observers that the data set has changed. This will cause every
-            // element in our RecyclerView to be invalidated.
+            Timber.d(value.toString())
             notifyDataSetChanged()
         }
 
@@ -34,7 +32,7 @@ class PlayerAdapter: RecyclerView.Adapter<PlayerItemViewHolder>() {
 
     override fun onBindViewHolder(holder: PlayerItemViewHolder, position: Int) {
         holder.viewDataBinding.also {
-            
+            it.player = players[position]
         }
     }
 
