@@ -7,9 +7,10 @@ import com.lpdim.spacedim.game.model.Event
 import com.lpdim.spacedim.game.model.User
 
 class GameViewModel : ViewModel() {
-    private val _event = WebSocketLiveData.instance
 
-    val event: WebSocketLiveData
+    private val _event = WebSocketManager.event
+
+    val event: LiveData<Event>
         get() {
             return _event
         }

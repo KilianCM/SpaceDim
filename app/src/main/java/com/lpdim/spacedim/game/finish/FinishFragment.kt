@@ -10,7 +10,7 @@ import androidx.navigation.findNavController
 
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.databinding.FragmentFinishBinding
-import com.lpdim.spacedim.game.MoshiService.eventAdapter
+import com.lpdim.spacedim.utils.MoshiService.eventAdapter
 import com.lpdim.spacedim.game.model.Event
 import kotlinx.android.synthetic.main.fragment_finish.*
 

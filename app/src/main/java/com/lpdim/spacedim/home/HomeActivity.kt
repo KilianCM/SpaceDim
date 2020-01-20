@@ -5,25 +5,18 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.api.API
 import com.lpdim.spacedim.game.GameActivity
-import com.lpdim.spacedim.game.MoshiService.userAdapter
-import com.lpdim.spacedim.game.MoshiService.userPostAdapter
-import com.lpdim.spacedim.game.WebSocketLiveData
-import com.lpdim.spacedim.game.WebSocketLiveData.Companion.client
+import com.lpdim.spacedim.game.WebSocketManager.okHttpClient
+import com.lpdim.spacedim.utils.MoshiService.userAdapter
+import com.lpdim.spacedim.utils.MoshiService.userPostAdapter
 import com.lpdim.spacedim.game.model.UserPost
 import com.lpdim.spacedim.score.ScoreActivity
 import okhttp3.RequestBody.Companion.toRequestBody
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_home.view.*
-import kotlinx.android.synthetic.main.fragment_waiting_room.*
 import okhttp3.*
 import java.io.IOException
 import java.lang.Exception
@@ -116,7 +109,7 @@ class HomeActivity : AppCompatActivity() {
     /**
      * Display a dialog window to log a user
      */
-    private fun displayLoginDialog() {
+    fun displayLoginDialog() {
         val builder = AlertDialog.Builder(this)
         val view = layoutInflater.inflate(R.layout.login_dialog, null)
         builder.setView(view)
@@ -152,7 +145,7 @@ class HomeActivity : AppCompatActivity() {
         val request = Request.Builder()
             .url(url)
             .build()
-        WebSocketLiveData.client.newCall(request).enqueue(callback)
+        okHttpClient.newCall(request).enqueue(callback)
     }
 
     /**
@@ -167,7 +160,7 @@ class HomeActivity : AppCompatActivity() {
             .post(requestBody)
             .build()
 
-        client.newCall(request).enqueue(object : Callback {
+        okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
                 runOnUiThread {
@@ -190,7 +183,7 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
-    private fun goToScorePage(){
+    fun goToScorePage(){
         val userId = getUserFromSharedPreferences().first
 
         userId?.let {

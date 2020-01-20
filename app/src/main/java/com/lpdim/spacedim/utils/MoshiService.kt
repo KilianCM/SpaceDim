@@ -1,4 +1,4 @@
-package com.lpdim.spacedim.game
+package com.lpdim.spacedim.utils
 
 import com.lpdim.spacedim.game.model.*
 import com.squareup.moshi.JsonAdapter

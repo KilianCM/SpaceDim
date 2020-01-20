@@ -17,8 +17,7 @@ import androidx.navigation.findNavController
 import com.lpdim.spacedim.game.GameViewModel
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.databinding.FragmentPlayBinding
-import com.lpdim.spacedim.game.MoshiService.eventAdapter
-import com.lpdim.spacedim.game.WebSocketLiveData
+import com.lpdim.spacedim.utils.MoshiService.eventAdapter
 import com.lpdim.spacedim.game.model.Event
 import com.lpdim.spacedim.game.model.EventType
 import com.lpdim.spacedim.game.model.UIElement
@@ -29,7 +28,7 @@ import java.util.concurrent.TimeUnit
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.ShakeDetector
 import android.app.ActionBar
-import androidx.navigation.Navigation
+import com.lpdim.spacedim.game.WebSocketManager
 
 
 class PlayFragment : Fragment() {
@@ -99,7 +98,7 @@ class PlayFragment : Fragment() {
      * @param event the GameOver event
      */
     private fun finishGame(event: Event.GameOver) {
-        WebSocketLiveData.closeConnection()
+        WebSocketManager.closeConnection()
         val bundle = bundleOf("gameOver" to eventAdapter.toJson(event))
         view?.findNavController()?.navigate(R.id.action_gameFragment_to_finishFragment, bundle)
     }
@@ -212,6 +211,6 @@ class PlayFragment : Fragment() {
         val playerAction = Event.PlayerAction(uiElement)
         val playerActionJson = eventAdapter.toJson(playerAction)
 
-        WebSocketLiveData.webSocket?.send(playerActionJson)
+        WebSocketManager.webSocket?.send(playerActionJson)
     }
 }

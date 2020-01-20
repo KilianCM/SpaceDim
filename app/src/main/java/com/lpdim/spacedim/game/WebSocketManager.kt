@@ -1,40 +1,38 @@
 package com.lpdim.spacedim.game
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import com.lpdim.spacedim.api.API
-import com.lpdim.spacedim.game.MoshiService.eventAdapter
+import com.lpdim.spacedim.utils.MoshiService.eventAdapter
 import com.lpdim.spacedim.game.model.Event
 import okhttp3.*
 import okio.ByteString
 import timber.log.Timber
 import java.lang.Exception
 
-class WebSocketLiveData : LiveData<Event>() {
+object WebSocketManager {
+    var webSocket: WebSocket? = null
+    var okHttpClient = OkHttpClient()
 
-    companion object {
-        var instance = WebSocketLiveData()
-        var webSocket: WebSocket? = null
-        var client = OkHttpClient()
+    var event = MutableLiveData<Event>()
 
-
-        fun closeConnection() {
-            webSocket?.close(1000, "Game ended or stopped")
-            webSocket = null
-        }
+    /**
+     * Close the websocket connection
+     */
+    fun closeConnection() {
+        webSocket?.close(1000, "Game ended or stopped")
+        webSocket = null
     }
 
+    /**
+     * Create the connection to the Websocket server
+     * @param roomName the name of the room to join
+     * @param user the id of the user to connect
+     */
     fun connect(roomName: String, userId: Int) {
         val url = API.BASE_URL_WS + API.JOIN_ROOM + "$roomName/$userId"
         Timber.d("Try to connect to $url")
         val request = Request.Builder().url(url).build()
-        webSocket = client.newWebSocket(request, listener)
-    }
-
-    override fun observe(owner: LifecycleOwner, observer: Observer<in Event>) {
-        super.observe(owner, observer)
-        Timber.d("Observing")
+        webSocket = okHttpClient.newWebSocket(request, listener)
     }
 
     private val listener = object: WebSocketListener() {
@@ -63,13 +61,17 @@ class WebSocketLiveData : LiveData<Event>() {
         }
     }
 
+    /**
+     * Deserialize the json of an event and update the value of the LiveData
+     * @param value the json to deserialize
+     */
     private fun processEvent(value: String) {
         try {
-            val event = eventAdapter.fromJson(value)
-            postValue(event)
+            Timber.d(value)
+            event.postValue(eventAdapter.fromJson(value))
         } catch (e: Exception) {
+            e.printStackTrace()
             Timber.e("Invalid event model")
         }
     }
-
 }

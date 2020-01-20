@@ -5,17 +5,13 @@ import android.os.Bundle
 import android.widget.Toast
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.api.API
-import com.lpdim.spacedim.game.MoshiService
-import com.lpdim.spacedim.game.MoshiService.userAdapter
-import com.lpdim.spacedim.game.WebSocketLiveData.Companion.client
-import com.lpdim.spacedim.game.model.User
+import com.lpdim.spacedim.utils.MoshiService.userAdapter
+import com.lpdim.spacedim.game.WebSocketManager.okHttpClient
 import kotlinx.android.synthetic.main.activity_score.*
 import okhttp3.Call
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
-import javax.security.auth.callback.Callback
-import kotlin.math.absoluteValue
 
 class ScoreActivity : AppCompatActivity() {
 
@@ -32,7 +28,7 @@ class ScoreActivity : AppCompatActivity() {
         val request = Request.Builder()
             .url(API.BASE_URL_HTTP + API.GET_USER_BY_ID + userId.toString())
             .build()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
+        okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
                 runOnUiThread {

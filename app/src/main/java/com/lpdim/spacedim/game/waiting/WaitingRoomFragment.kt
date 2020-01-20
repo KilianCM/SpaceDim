@@ -15,12 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lpdim.spacedim.databinding.FragmentWaitingRoomBinding
 import com.lpdim.spacedim.game.GameViewModel
-import com.lpdim.spacedim.game.MoshiService.eventAdapter
-import com.lpdim.spacedim.game.WebSocketLiveData.Companion.webSocket
+import com.lpdim.spacedim.utils.MoshiService.eventAdapter
+import com.lpdim.spacedim.game.WebSocketManager
+import com.lpdim.spacedim.game.WebSocketManager.webSocket
 import com.lpdim.spacedim.game.model.Event
 import com.lpdim.spacedim.game.model.EventType
-import com.lpdim.spacedim.game.model.UIElement
-import kotlinx.android.synthetic.main.fragment_waiting_room.*
 import timber.log.Timber
 
 class WaitingRoomFragment : Fragment() {
@@ -46,7 +45,7 @@ class WaitingRoomFragment : Fragment() {
         roomName?.let { roomName ->
             userId?.let { userId ->
                 Timber.d("connect")
-                viewModel.event.connect(roomName, userId)
+                WebSocketManager.connect(roomName, userId)
             }
         }
 

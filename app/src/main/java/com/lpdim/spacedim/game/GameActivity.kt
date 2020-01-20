@@ -13,6 +13,6 @@ class GameActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        WebSocketLiveData.closeConnection()
+        WebSocketManager.closeConnection()
     }
 }
