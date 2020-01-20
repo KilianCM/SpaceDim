@@ -28,6 +28,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.ShakeDetector
+import android.app.ActionBar
 
 
 class PlayFragment : Fragment() {
@@ -169,6 +170,12 @@ class PlayFragment : Fragment() {
         generatedElement.id = uiElement.id
         generatedElement.text = uiElement.content
 
+        val params = ActionBar.LayoutParams(
+            ActionBar.LayoutParams.WRAP_CONTENT,
+            ActionBar.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(2, 2, 2, 2)
+        generatedElement.setLayoutParams(params)
         // Create a ClickListener to send PlayerAction on click on this element
         generatedElement.setOnClickListener {
             sendPlayerAction(uiElement)
