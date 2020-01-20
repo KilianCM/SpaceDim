@@ -6,22 +6,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".score.ScoreActivity">
+    <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:scaleType="centerCrop" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:srcCompat="@drawable/ic_bg_soft"/>
+    <ImageView
+            android:id="@+id/imageViewAstronaut"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:scaleType="fitEnd"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:srcCompat="@drawable/ic_astronaut"/>
     <TextView
             android:id="@+id/tvScore"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/user_score" android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/tvScoreValue" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+            android:fontFamily="monospace"
+            android:gravity="center" android:text="@string/user_best_score"
+            android:textSize="30sp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.48" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="@+id/imageViewAstronaut"/>
     <TextView
             android:id="@+id/tvScoreValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center" android:text="test"
-            android:textSize="36sp" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="32dp"
+            android:fontFamily="monospace" android:gravity="center"
+            android:textSize="56sp"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/tvScore"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

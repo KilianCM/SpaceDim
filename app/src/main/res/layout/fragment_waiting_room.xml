@@ -10,8 +10,8 @@
         <TextView
                 android:id="@+id/textViewWaiting"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:gravity="center" android:text="@string/waiting_room"
-                android:textSize="36sp"/>
+                android:layout_height="wrap_content" android:fontFamily="monospace" android:gravity="center"
+                android:text="@string/waiting_room" android:textSize="30sp"/>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/player_list"

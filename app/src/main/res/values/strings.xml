@@ -28,4 +28,5 @@
     <string name="id_key">USER_ID</string>
     <string name="username_key">USER_NAME</string>
     <string name="login_tip_register">Pas d\'inquiétude, si ton pseudo n\'existe pas, il sera créé !</string>
+    <string name="user_best_score">Votre meilleur score</string>
 </resources>

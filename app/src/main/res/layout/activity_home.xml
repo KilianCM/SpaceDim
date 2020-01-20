@@ -8,11 +8,17 @@
         tools:context=".home.HomeActivity">
 
     <ImageView
+            android:id="@+id/imageViewBackground"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:scaleType="centerCrop" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:srcCompat="@drawable/ic_bg_soft"/>
+    <ImageView
             android:id="@+id/imageViewRocket"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:scaleType="fitEnd" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_rocket"/>
+            android:scaleType="fitEnd"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:srcCompat="@drawable/ic_rocket"/>
     <TextView
             android:id="@+id/tvHomePageTitle"
             android:layout_width="wrap_content"
