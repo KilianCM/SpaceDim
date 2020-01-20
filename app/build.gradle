@@ -58,4 +58,8 @@ dependencies {
     // sensey lib for shake dectection
     implementation 'com.github.nisrulz:sensey:1.8.0'
 
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+
+
 }

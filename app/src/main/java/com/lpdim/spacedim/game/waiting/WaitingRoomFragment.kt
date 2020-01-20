@@ -23,6 +23,8 @@ import timber.log.Timber
 
 class WaitingRoomFragment : Fragment() {
     private lateinit var viewModel: GameViewModel
+    private var viewModelAdapter: PlayerAdapter? = null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -33,6 +35,7 @@ class WaitingRoomFragment : Fragment() {
 
         val roomName = activity?.intent?.extras?.getString("roomName")
         val userId = activity?.intent?.extras?.getInt("userId")
+
 
         roomName?.let { roomName ->
             userId?.let { userId ->
@@ -52,6 +55,7 @@ class WaitingRoomFragment : Fragment() {
 
         viewModel.userList.observe(this, Observer { list ->
             Timber.d(list.toString())
+            viewModelAdapter?.players = list
         })
 
         return binding.root
