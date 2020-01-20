@@ -30,20 +30,22 @@ import java.lang.Exception
 
 class HomeActivity : AppCompatActivity() {
 
+    private var userInfos: Pair<Int?,String?>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val userInfos = getUserFromSharedPreferences()
+        userInfos = getUserFromSharedPreferences()
 
-        userInfos.second?.let {
+        userInfos?.second?.let {
             editTextName.setText(it, TextView.BufferType.EDITABLE)
         } ?: run {
             displayLoginDialog()
         }
 
         btnLaunchGame.setOnClickListener {
-            userInfos.first?.let {
+            userInfos?.first?.let {
                 displayRoomSelectDialog(it)
             } ?: kotlin.run {
                 displayLoginDialog()
@@ -57,14 +59,7 @@ class HomeActivity : AppCompatActivity() {
         btnScore.setOnClickListener {
             goToScorePage()
         }
-
-
-
     }
-
-
-
-
 
     /**
      * Check if User is already created, if not we create a new one
@@ -222,8 +217,8 @@ class HomeActivity : AppCompatActivity() {
 
     private fun saveUserInSharedPreferences(userId: Int, userName: String) {
         val sharedPreferences =  getPreferences(Context.MODE_PRIVATE)
-
         val editor = sharedPreferences.edit()
+        userInfos = Pair(userId, userName)
         editor.putInt(getString(R.string.id_key), userId)
         editor.putString(getString(R.string.username_key), userName)
         editor.apply()

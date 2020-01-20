@@ -11,4 +11,8 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        WebSocketLiveData.closeConnection()
+    }
 }

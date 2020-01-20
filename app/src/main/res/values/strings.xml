@@ -4,7 +4,7 @@
     <string name="back_to_home_page">Retour au menu principal</string>
     <string name="ready_button">Je suis prêt !</string>
     <string name="waiting_room">Salle d\'attente</string>
-    <string name="level_finish">Vous avez atteint le niveau</string>
+    <string name="level_finish">Tu as atteins le niveau</string>
     <string name="win">GAGNÉ !</string>
     <string name="loose">PERDU !</string>
     <string name="user_score">Score :</string>
@@ -17,9 +17,9 @@
     <string name="error_register">Une erreur est survenue durant l\'inscription. Veuillez réessayer.</string>
     <string name="launch_game">Jouer !</string>
     <string name="login">Connexion</string>
-    <string name="game_launch_explain">Saisissez votre pseudo pour lancer une partie</string>
+    <string name="game_launch_explain">Saisis ton pseudo pour lancer une partie</string>
     <string name="user_not_exist">Ce joueur n\'existe pas, inscrivez vous avant de lancer une partie</string>
-    <string name="room_selection_label">Saisissez le nom de la partie à rejoindre :</string>
+    <string name="room_selection_label">Saisis le nom de la partie à rejoindre :</string>
     <string name="room_name">Nom de la partie</string>
     <string name="room_selection_title">Choix de la partie</string>
     <string name="score"> Score </string>

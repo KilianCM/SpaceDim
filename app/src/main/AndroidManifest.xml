@@ -13,11 +13,14 @@
             android:usesCleartextTraffic="true"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".score.ScoreActivity">
+        <activity android:name=".score.ScoreActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".game.GameActivity">
+        <activity android:name=".game.GameActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".home.HomeActivity">
+        <activity android:name=".home.HomeActivity"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

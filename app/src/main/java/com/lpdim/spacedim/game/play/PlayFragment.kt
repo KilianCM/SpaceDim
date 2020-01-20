@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.ShakeDetector
 import android.app.ActionBar
+import androidx.navigation.Navigation
 
 
 class PlayFragment : Fragment() {
@@ -98,6 +99,7 @@ class PlayFragment : Fragment() {
      * @param event the GameOver event
      */
     private fun finishGame(event: Event.GameOver) {
+        WebSocketLiveData.closeConnection()
         val bundle = bundleOf("gameOver" to eventAdapter.toJson(event))
         view?.findNavController()?.navigate(R.id.action_gameFragment_to_finishFragment, bundle)
     }

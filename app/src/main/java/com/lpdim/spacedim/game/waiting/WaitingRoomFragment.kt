@@ -45,6 +45,7 @@ class WaitingRoomFragment : Fragment() {
 
         roomName?.let { roomName ->
             userId?.let { userId ->
+                Timber.d("connect")
                 viewModel.event.connect(roomName, userId)
             }
         }

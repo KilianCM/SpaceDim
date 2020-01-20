@@ -17,16 +17,11 @@ class WebSocketLiveData : LiveData<Event>() {
         var instance = WebSocketLiveData()
         var webSocket: WebSocket? = null
         var client = OkHttpClient()
-    }
 
-    override fun onInactive() {
-        super.onInactive()
-        disconnect()
-    }
 
-    private fun disconnect() {
-        if(!hasActiveObservers()) {
-            webSocket?.close(1000, "Game ended")
+        fun closeConnection() {
+            webSocket?.close(1000, "Game ended or stopped")
+            webSocket = null
         }
     }
 
@@ -35,8 +30,6 @@ class WebSocketLiveData : LiveData<Event>() {
         Timber.d("Try to connect to $url")
         val request = Request.Builder().url(url).build()
         webSocket = client.newWebSocket(request, listener)
-
-        client.dispatcher.executorService.shutdown()
     }
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in Event>) {
