@@ -5,8 +5,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.api.API
 import com.lpdim.spacedim.game.GameActivity
@@ -18,6 +22,8 @@ import com.lpdim.spacedim.game.model.UserPost
 import com.lpdim.spacedim.score.ScoreActivity
 import okhttp3.RequestBody.Companion.toRequestBody
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.activity_home.view.*
+import kotlinx.android.synthetic.main.fragment_waiting_room.*
 import okhttp3.*
 import java.io.IOException
 import java.lang.Exception
@@ -51,7 +57,14 @@ class HomeActivity : AppCompatActivity() {
         btnScore.setOnClickListener {
             goToScorePage()
         }
+
+
+
     }
+
+
+
+
 
     /**
      * Check if User is already created, if not we create a new one

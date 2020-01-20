@@ -20,8 +20,9 @@
               android:name="com.lpdim.spacedim.game.finish.FinishFragment"
               android:label="FinishFragment"
               tools:layout="@layout/fragment_finish"  >
-        <action android:id="@+id/action_finishFragment_to_waitingRoomFragment"
-                app:destination="@id/waitingRoomFragment" app:popUpTo="@+id/waitingRoomFragment"
+        <action android:id="@+id/action_finishFragment_to_homeActivity" app:destination="@id/homeActivity"
                 app:popUpToInclusive="true"/>
     </fragment>
+    <activity android:id="@+id/homeActivity" android:name="com.lpdim.spacedim.home.HomeActivity"
+              android:label="activity_home" tools:layout="@layout/activity_home"/>
 </navigation>

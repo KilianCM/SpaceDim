@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SpaceDim</string>
     <string name="play_again">Rejouer</string>
+    <string name="back_to_home_page">Retour au menu principal</string>
     <string name="ready_button">Je suis prêt !</string>
     <string name="waiting_room">Salle d\'attente</string>
     <string name="level_finish">Vous avez atteint le niveau</string>

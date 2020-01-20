@@ -24,7 +24,7 @@ class FinishFragment : Fragment() {
             inflater, R.layout.fragment_finish, container, false)
 
         binding.buttonPlayAgain.setOnClickListener { view ->
-            view.findNavController().navigate(R.id.action_finishFragment_to_waitingRoomFragment)
+            view.findNavController().navigate(R.id.action_finishFragment_to_homeActivity)
         }
 
         return binding.root
