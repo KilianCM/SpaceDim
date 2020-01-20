@@ -136,6 +136,8 @@ class PlayFragment : Fragment() {
      * @param uiElements list of UI elements to generate
      */
     private fun generateUI(uiElements: List<UIElement>) {
+        layoutUiElementRow1.removeAllViews()
+        layoutUiElementRow2.removeAllViews()
         uiElements.forEachIndexed { index: Int, uiElement: UIElement ->
             generateViewComponent(index, uiElement)
         }

@@ -49,7 +49,7 @@ class ScoreActivity : AppCompatActivity() {
                         val userScore = user?.score
                         userScore?.let {
                             runOnUiThread {
-                                tvScore.text = userScore.toString()
+                                tvScoreValue.text = userScore.toString()
                             }
                         }
                     }
