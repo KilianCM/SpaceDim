@@ -1,5 +1,6 @@
 package com.lpdim.spacedim.game.finish
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,9 +12,11 @@ import androidx.navigation.findNavController
 
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.databinding.FragmentFinishBinding
+import com.lpdim.spacedim.game.GameActivity
 import com.lpdim.spacedim.game.GameViewModel
 import com.lpdim.spacedim.utils.MoshiService.eventAdapter
 import com.lpdim.spacedim.game.model.Event
+import com.lpdim.spacedim.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_finish.*
 
 
@@ -25,14 +28,12 @@ class FinishFragment : Fragment() {
         val binding: FragmentFinishBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_finish, container, false)
 
-
-
-        val navController = view?.findNavController()
-
         binding.buttonPlayAgain.setOnClickListener { view ->
-            if (navController?.currentDestination?.id == R.id.action_finishFragment_to_homeActivity) {
-                navController.navigate(R.id.action_finishFragment_to_homeActivity)
-            }
+            backToHomePage()
+//            val navController = view.findNavController()
+//            if (navController.currentDestination?.id == R.id.action_finishFragment_to_homeActivity) {
+//                navController.navigate(R.id.action_finishFragment_to_homeActivity)
+//            }
         }
 
         return binding.root
@@ -58,5 +59,11 @@ class FinishFragment : Fragment() {
 
         textViewScoreValue.text = event.score.toString()
     }
+
+    private fun backToHomePage() {
+        val intent = Intent(activity, HomeActivity::class.java)
+        startActivity(intent)
+    }
+
 
 }

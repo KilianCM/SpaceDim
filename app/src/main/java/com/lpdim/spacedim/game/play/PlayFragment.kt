@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.ShakeDetector
 import android.app.ActionBar
+import android.view.Gravity
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.lpdim.spacedim.game.GameActivity
@@ -194,14 +195,16 @@ class PlayFragment : Fragment() {
         // Configure element with uiElement info
         generatedElement.id = uiElement.id
         generatedElement.text = uiElement.content
+        generatedElement.gravity = Gravity.CENTER
 
         val params = ActionBar.LayoutParams(
-            ActionBar.LayoutParams.WRAP_CONTENT,
+            ActionBar.LayoutParams.MATCH_PARENT,
             ActionBar.LayoutParams.WRAP_CONTENT
         )
 
-        params.setMargins(2, 2, 2, 2)
+        params.setMargins(2, 24, 2, 24)
         generatedElement.layoutParams = params
+        generatedElement.setPadding(0, 56, 0, 56)
 
         // Create a ClickListener to send PlayerAction on click on this element
         generatedElement.setOnClickListener {

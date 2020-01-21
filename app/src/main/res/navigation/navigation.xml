@@ -9,8 +9,6 @@
               tools:layout="@layout/fragment_waiting_room"  >
         <action android:id="@+id/action_waitingRoomFragment_to_gameFragment"
                 app:destination="@id/gameFragment" app:popUpTo="@+id/waitingRoomFragment" app:popUpToInclusive="true"/>
-        <action android:id="@+id/action_waitingRoomFragment_to_homeActivity" app:destination="@id/homeActivity"
-                app:popUpToInclusive="false"/>
     </fragment>
     <fragment android:id="@+id/gameFragment"
               android:name="com.lpdim.spacedim.game.play.PlayFragment"
@@ -22,10 +20,7 @@
     <fragment android:id="@+id/finishFragment"
               android:name="com.lpdim.spacedim.game.finish.FinishFragment"
               android:label="FinishFragment"
-              tools:layout="@layout/fragment_finish"  >
-        <action android:id="@+id/action_finishFragment_to_homeActivity" app:destination="@id/homeActivity"
-                app:popUpTo="@+id/homeActivity" app:popUpToInclusive="false"/>
-    </fragment>
+              tools:layout="@layout/fragment_finish"  />
     <activity android:id="@+id/homeActivity" android:name="com.lpdim.spacedim.home.HomeActivity"
               android:label="activity_home" tools:layout="@layout/activity_home"/>
 </navigation>
