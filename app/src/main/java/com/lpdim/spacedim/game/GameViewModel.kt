@@ -30,4 +30,11 @@ class GameViewModel : ViewModel() {
             return@map 0.toLong()
         }
     }
+
+    private val _errorMessage = WebSocketManager.errorMessage
+
+    val errorMessage: LiveData<String>
+        get() {
+            return _errorMessage
+        }
 }

@@ -1,5 +1,6 @@
 package com.lpdim.spacedim.game
 
+import android.provider.Settings.Global.getString
 import androidx.lifecycle.*
 import com.lpdim.spacedim.api.API
 import com.lpdim.spacedim.utils.MoshiService.eventAdapter
@@ -14,6 +15,7 @@ object WebSocketManager {
     var okHttpClient = OkHttpClient()
 
     var event = MutableLiveData<Event>()
+    var errorMessage = MutableLiveData<String>()
 
     /**
      * Close the websocket connection
@@ -58,6 +60,7 @@ object WebSocketManager {
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
             Timber.d("Error : %s", t.message)
+            processErrorMessage("Impossible de rejoindre ce vaisseau !")
         }
     }
 
@@ -72,6 +75,15 @@ object WebSocketManager {
         } catch (e: Exception) {
             e.printStackTrace()
             Timber.e("Invalid event model")
+        }
+    }
+
+    private fun processErrorMessage(value: String){
+        Timber.d(value)
+        try {
+            errorMessage.postValue(value)
+        } catch (e:Exception){
+            e.printStackTrace()
         }
     }
 }

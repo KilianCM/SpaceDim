@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.lpdim.spacedim.R
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -68,6 +69,10 @@ class WaitingRoomFragment : Fragment() {
             Timber.d(list.toString())
             viewModelAdapter?.players = list
             loadingBarWaitingRoom.visibility = View.GONE
+        })
+
+        viewModel.errorMessage.observe(this, Observer { errorMessage ->
+            Toast.makeText(activity, errorMessage, Toast.LENGTH_LONG).show()
         })
 
         return binding.root

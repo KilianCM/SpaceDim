@@ -9,6 +9,8 @@
               tools:layout="@layout/fragment_waiting_room"  >
         <action android:id="@+id/action_waitingRoomFragment_to_gameFragment"
                 app:destination="@id/gameFragment" app:popUpTo="@+id/waitingRoomFragment" app:popUpToInclusive="true"/>
+        <action android:id="@+id/action_waitingRoomFragment_to_homeActivity" app:destination="@id/homeActivity"
+                app:popUpToInclusive="false"/>
     </fragment>
     <fragment android:id="@+id/gameFragment"
               android:name="com.lpdim.spacedim.game.play.PlayFragment"
