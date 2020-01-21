@@ -23,8 +23,12 @@ class FinishFragment : Fragment() {
         val binding: FragmentFinishBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_finish, container, false)
 
+        val navController = view?.findNavController()
+
         binding.buttonPlayAgain.setOnClickListener { view ->
-            view.findNavController().navigate(R.id.action_finishFragment_to_homeActivity)
+            if (navController?.currentDestination?.id == R.id.action_finishFragment_to_homeActivity) {
+                navController.navigate(R.id.action_finishFragment_to_homeActivity)
+            }
         }
 
         return binding.root

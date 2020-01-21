@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit
 import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.ShakeDetector
 import android.app.ActionBar
+import androidx.navigation.fragment.findNavController
 import com.lpdim.spacedim.game.WebSocketManager
 
 
@@ -70,6 +71,14 @@ class PlayFragment : Fragment() {
                 Timber.e("Impossible to generate action buttons")
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        countDownTimer?.cancel()
+        countDownTimer = null
+        WebSocketManager.closeConnection()
+
     }
 
     /**
@@ -213,4 +222,6 @@ class PlayFragment : Fragment() {
 
         WebSocketManager.webSocket?.send(playerActionJson)
     }
+
+
 }
