@@ -38,6 +38,13 @@ class PlayFragment : Fragment() {
     private lateinit var viewModel: GameViewModel
     private var countDownTimer: CountDownTimer? = null
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Sensey.getInstance().init(context)
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,6 +65,7 @@ class PlayFragment : Fragment() {
         viewModel.timer.observe(this, Observer { timer ->
             createAndStartTimer(timer)
         })
+
 
         return binding.root
     }
