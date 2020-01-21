@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.lpdim.spacedim.R
+import com.lpdim.spacedim.home.HomeActivity
 
 class GameActivity : AppCompatActivity() {
     private lateinit var viewModel: GameViewModel
@@ -29,5 +30,14 @@ class GameActivity : AppCompatActivity() {
     override fun onNavigateUp(): Boolean {
         val navController = this.findNavController(R.id.myNavHostFragment)
         return navController.navigateUp()
+    }
+
+    override fun onBackPressed() {
+        backToHomePage()
+    }
+
+    private fun backToHomePage() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 }

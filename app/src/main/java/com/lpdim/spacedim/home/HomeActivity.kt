@@ -29,8 +29,8 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        // get userid and username stored in shared preferences
         userInfos = getUserFromSharedPreferences()
-
         userInfos?.second?.let {
             editTextName.setText(it, TextView.BufferType.EDITABLE)
         } ?: run {
@@ -183,17 +183,12 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Launch the ScoreActivity
+     */
     private fun goToScorePage(){
-        val userId = getUserFromSharedPreferences().first
-
-        userId?.let {
-            val intent = Intent(this, ScoreActivity::class.java).apply {
-                putExtra("userId", userId)
-            }
-            startActivity(intent)
-        } ?: run {
-            Toast.makeText(this, getString(R.string.user_not_exist), Toast.LENGTH_LONG).show()
-        }
+        val intent = Intent(this, ScoreActivity::class.java)
+        startActivity(intent)
     }
 
     private fun getUserFromSharedPreferences(): Pair<Int?, String?> {
