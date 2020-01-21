@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
                 android:layout_weight="1"
-                android:text="@string/score"/>
+                android:text="@string/score_list"/>
         <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"

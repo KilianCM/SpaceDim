@@ -5,6 +5,8 @@ object API {
     const val REGISTER_USER = "/api/user/register"
     const val GET_USER = "/api/user/find/"
     const val GET_USER_BY_ID = "/api/user/"
+    const val GET_USER_LIST = "/api/users?sort="
+
     const val BASE_URL_WS = "ws://vps769278.ovh.net:8081/ws"
     const val JOIN_ROOM = "/join/"
 }

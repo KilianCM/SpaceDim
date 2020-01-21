@@ -3,8 +3,12 @@ package com.lpdim.spacedim.utils
 import com.lpdim.spacedim.game.model.*
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.squareup.moshi.Types.newParameterizedType
+
+
 
 /**
  * Moshi instance with settings to deserialize sealed classes
@@ -36,5 +40,9 @@ object MoshiService {
     val eventAdapter: JsonAdapter<Event> = moshi.adapter(Event::class.java)
     val userAdapter: JsonAdapter<User> = moshi.adapter(User::class.java)
     val userPostAdapter: JsonAdapter<UserPost> = moshi.adapter(UserPost::class.java)
+
+    private val typeListUser = Types.newParameterizedType(List::class.java, User::class.java)
+    var userListAdapter: JsonAdapter<List<User>> = moshi.adapter(typeListUser)
+
 
 }

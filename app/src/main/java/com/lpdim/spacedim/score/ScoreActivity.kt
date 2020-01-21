@@ -2,60 +2,67 @@ package com.lpdim.spacedim.score
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.api.API
 import com.lpdim.spacedim.utils.MoshiService.userAdapter
 import com.lpdim.spacedim.game.WebSocketManager.okHttpClient
+import com.lpdim.spacedim.game.waiting.PlayerAdapter
+import com.lpdim.spacedim.utils.MoshiService.userListAdapter
 import kotlinx.android.synthetic.main.activity_score.*
 import okhttp3.Call
 import okhttp3.Request
 import okhttp3.Response
+import timber.log.Timber
 import java.io.IOException
 
 class ScoreActivity : AppCompatActivity() {
 
+    private var scoreAdapter: ScoreAdapter? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_score)
-        val userId = intent.extras?.getInt("userId")
-        userId?.let {
-            getUserScore(userId)
+
+        Timber.d("OnCreate")
+        scoreAdapter = ScoreAdapter()
+        findViewById<RecyclerView>(R.id.player_list_score).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = scoreAdapter
         }
+
+        getUserScoreList("top")
     }
 
-    private fun getUserScore(userId: Int){
+    private fun getUserScoreList(param: String){
+        Timber.d(API.BASE_URL_HTTP + API.GET_USER_LIST + param)
         val request = Request.Builder()
-            .url(API.BASE_URL_HTTP + API.GET_USER_BY_ID + userId.toString())
+            .url(API.BASE_URL_HTTP + API.GET_USER_LIST + param)
             .build()
         okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
-                runOnUiThread {
-                    Toast.makeText(
-                        this@ScoreActivity,
-                        getString(R.string.user_not_exist),
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
             }
 
             override fun onResponse(call: Call, response: Response) {
-                response.use{
+                response.use {
+                    Timber.d(it.message)
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
                     response.body?.let {
-                        val user = userAdapter.fromJson(it.source())
-                        val userScore = user?.score
-                        userScore?.let {
+                        Timber.d(it.toString())
+                        userListAdapter.fromJson(it.source())?.let {
                             runOnUiThread {
-                                tvScoreValue.text = userScore.toString()
+                                scoreAdapter?.players = it
+                                loadingBarScore.visibility = View.GONE
                             }
                         }
                     }
-
                 }
             }
         })
-
     }
 }

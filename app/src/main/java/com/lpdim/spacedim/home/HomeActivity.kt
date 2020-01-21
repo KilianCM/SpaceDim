@@ -109,7 +109,7 @@ class HomeActivity : AppCompatActivity() {
     /**
      * Display a dialog window to log a user
      */
-    fun displayLoginDialog() {
+    private fun displayLoginDialog() {
         val builder = AlertDialog.Builder(this)
         val view = layoutInflater.inflate(R.layout.login_dialog, null)
         builder.setView(view)
@@ -183,7 +183,7 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
-    fun goToScorePage(){
+    private fun goToScorePage(){
         val userId = getUserFromSharedPreferences().first
 
         userId?.let {

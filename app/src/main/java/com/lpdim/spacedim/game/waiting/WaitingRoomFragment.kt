@@ -20,6 +20,7 @@ import com.lpdim.spacedim.game.WebSocketManager
 import com.lpdim.spacedim.game.WebSocketManager.webSocket
 import com.lpdim.spacedim.game.model.Event
 import com.lpdim.spacedim.game.model.EventType
+import kotlinx.android.synthetic.main.fragment_waiting_room.*
 import timber.log.Timber
 
 class WaitingRoomFragment : Fragment() {
@@ -66,6 +67,7 @@ class WaitingRoomFragment : Fragment() {
         viewModel.userList.observe(this, Observer { list ->
             Timber.d(list.toString())
             viewModelAdapter?.players = list
+            loadingBarWaitingRoom.visibility = View.GONE
         })
 
         return binding.root

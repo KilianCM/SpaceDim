@@ -198,8 +198,10 @@ class PlayFragment : Fragment() {
             ActionBar.LayoutParams.WRAP_CONTENT,
             ActionBar.LayoutParams.WRAP_CONTENT
         )
+
         params.setMargins(2, 2, 2, 2)
-        generatedElement.setLayoutParams(params)
+        generatedElement.layoutParams = params
+
         // Create a ClickListener to send PlayerAction on click on this element
         generatedElement.setOnClickListener {
             sendPlayerAction(uiElement)
