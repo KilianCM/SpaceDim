@@ -29,6 +29,7 @@ import com.github.nisrulz.sensey.Sensey
 import com.github.nisrulz.sensey.ShakeDetector
 import android.app.ActionBar
 import androidx.navigation.fragment.findNavController
+import com.lpdim.spacedim.game.GameActivity
 import com.lpdim.spacedim.game.WebSocketManager
 
 
@@ -44,7 +45,10 @@ class PlayFragment : Fragment() {
         val binding: FragmentPlayBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_play, container, false)
 
-        viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
+        viewModel = activity.run{
+           ViewModelProviders.of(this@PlayFragment).get(GameViewModel::class.java)
+        }
+
 
         viewModel.event.observe(this, Observer { event ->
             Timber.d(event.toString())

@@ -32,7 +32,10 @@ class WaitingRoomFragment : Fragment() {
         val binding: FragmentWaitingRoomBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_waiting_room, container, false)
 
-        viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
+        viewModel = activity.run{
+            ViewModelProviders.of(this@WaitingRoomFragment).get(GameViewModel::class.java)
+        }
+
         viewModelAdapter = PlayerAdapter()
         binding.root.findViewById<RecyclerView>(R.id.player_list).apply {
             layoutManager = LinearLayoutManager(context)

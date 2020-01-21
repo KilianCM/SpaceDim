@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 
 import com.lpdim.spacedim.R
 import com.lpdim.spacedim.databinding.FragmentFinishBinding
+import com.lpdim.spacedim.game.GameViewModel
 import com.lpdim.spacedim.utils.MoshiService.eventAdapter
 import com.lpdim.spacedim.game.model.Event
 import kotlinx.android.synthetic.main.fragment_finish.*
@@ -22,6 +24,8 @@ class FinishFragment : Fragment() {
     ): View? {
         val binding: FragmentFinishBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_finish, container, false)
+
+
 
         val navController = view?.findNavController()
 
